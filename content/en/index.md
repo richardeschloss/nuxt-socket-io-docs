@@ -34,9 +34,9 @@ Nuxt Socket.io -- socket.io client and server module for Nuxt
 <p class="flex items-center">Enjoy light and dark mode: <color-switcher class="p-2"></color-switcher></p>
 
 ## Demo
-Heroku hosts the IO Server, netlify hosts the IO Client (Nuxt app). See it in action [here](https://nuxt-socket-io.netlify.com/)
+Several demos can be found [here](https://nuxt-socket-io.herokuapp.com/)
 
-My plan to is include those demos here, possibly. Perhaps have the examples in their own dedicated section.
+These docs will attempt to explain and be in sync with the examples shown there. 
 
 ## Online playground
 

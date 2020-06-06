@@ -67,8 +67,14 @@ export default {
   modules: [
     'nuxt-i18n',
     '@nuxtjs/pwa',
-    '@nuxt/content'
+    '@nuxt/content',
+    'nuxt-socket-io'
   ],
+  io: {
+    sockets: [{
+      url: 'https://nuxt-socket-io.herokuapp.com'
+    }]
+  },
   /*
   ** Components auto import
   ** See https://github.com/nuxt/components
