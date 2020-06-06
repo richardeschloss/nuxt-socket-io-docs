@@ -19,29 +19,27 @@ io: {
 
 The IO server on heroku has been configured to support connections to the "/index" namespace. At that namespace, one of the events it listens for is "getMessage". It will respond with the message. In addition to responding with the message, before the server fully responds, it will emit an event "chatMessages", which we could listen for. That will be shown in the next example. But first, the simple stuff...
 
-In this example, when the component first mounts, we create a socket instance, and connect to '/index' namespace. Since we only have one entry in nuxt.config, that will be used. We define a method `getMessage` to emit the event, and define `messageRxd` to be used for saving the response.
+In this example, when the component first mounts, we create a socket instance, and connect to '/index' namespace. Since we only have one entry in nuxt.config, that will be used. We define a method `getMessage` to emit the event, and define `messageRxd` to be used for saving the response. In the example below, the `getMessage` method has been promisified, but it would still work find without it.
 
 ### Try It!
 <basic></basic>
 ```js{}
-mounted() {
-  data () {
-    return {
-      messageRxd: ''
-    }
-  },
-  mounted () {
-    this.socket = this.$nuxtSocket({ channel: '/index' })
-  },
-  methods: {
-    getMessage () {
-      return new Promise((resolve) => {
-        this.socket.emit('getMessage', { id: 'abc123' }, (resp) => {
-          this.messageRxd = resp
-          resolve()
-        })
+data () {
+  return {
+    messageRxd: ''
+  }
+},
+mounted () {
+  this.socket = this.$nuxtSocket({ channel: '/index' })
+},
+methods: {
+  getMessage () {
+    return new Promise((resolve) => {
+      this.socket.emit('getMessage', { id: 'abc123' }, (resp) => {
+        this.messageRxd = resp
+        resolve()
       })
-    }
+    })
   }
 }
 ```
