@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: 'Nuxt Socket.io module -- easily configure and use your socket.io clients!'
+description: 'Nuxt Socket.io -- socket.io client and server module for Nuxt!'
 position: 1
 category: Getting started
 features:
@@ -13,11 +13,19 @@ features:
   - Automatic Teardown, enabled by default
   - $nuxtSocket vuex module and socket persistence in vuex
   - Support for dynamic APIs using the KISS API format
-
-csb_link: https://codesandbox.io/embed/nuxt-content-l164h?hidenavigation=1&theme=dark
+badges:
+  - npm:version
+  - npm:dt
+  - gitlab:pipeline
+  - gitlab:coverage
+  - npm:license
+  
+csb_link: https://codesandbox.io/s/nuxt-socket-io-pgpui?file=/nuxt.config.js
 ---
 
-Nuxt Socket.io module -- easily configure and use your socket.io clients!
+<badges :badges="badges" project="nuxt-socket-io" user="richardeschloss"></badges>
+
+Nuxt Socket.io -- socket.io client and server module for Nuxt
 
 ## Features
 
@@ -30,26 +38,6 @@ Heroku hosts the IO Server, netlify hosts the IO Client (Nuxt app). See it in ac
 
 My plan to is include those demos here, possibly. Perhaps have the examples in their own dedicated section.
 
-## Videos
-
-Demonstration of using `$content` and `<nuxt-content>` to display Markdown pages:
-
-<video poster="https://res.cloudinary.com/nuxt/video/upload/v1588091670/nuxt-content_wxnjje.jpg" loop playsinline controls>
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588091670/nuxt-content_wxnjje.webm" type="video/webm" />
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588091670/nuxt-content_wxnjje.mp4" type="video/mp4" />
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588091670/nuxt-content_wxnjje.ogv" type="video/ogg" />
-</video>
-
-<br>
-
-Using `$content()` on a directory to list, filter and search content:
-
-<video poster="https://res.cloudinary.com/nuxt/video/upload/v1588095794/nuxt-content-movies_c0cq9p.jpg" loop playsinline controls>
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588095794/nuxt-content-movies_c0cq9p.webm" type="video/webm" />
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588095794/nuxt-content-movies_c0cq9p.mp4" type="video/mp4" />
-  <source src="https://res.cloudinary.com/nuxt/video/upload/v1588095794/nuxt-content-movies_c0cq9p.ogv" type="video/ogg" />
-</video>
-
 ## Online playground
 
-<code-sandbox :src="csb_link"></code-sandbox>
+Play with the [code sandbox](https://codesandbox.io/s/nuxt-socket-io-pgpui?file=/nuxt.config.js) as you read the docs.

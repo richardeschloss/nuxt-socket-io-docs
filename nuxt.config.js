@@ -1,4 +1,4 @@
-// const URL = 'https://content.nuxtjs.org'
+const URL = 'https://nuxt-socket-io.netlify.app'
 
 export default {
   target: 'static',
@@ -19,12 +19,12 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       // Open Graph
       { hid: 'og:site_name', property: 'og:site_name', content: 'Nuxt Socket.io' },
-      { hid: 'og:type', property: 'og:type', content: 'website' }
-      // { hid: 'og:url', property: 'og:url', content: URL }
-      // { hid: 'og:image', property: 'og:image', content: `${URL}/card.png` }
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { hid: 'og:url', property: 'og:url', content: URL },
+      { hid: 'og:image', property: 'og:image', content: `${URL}/card.png` }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   /*
@@ -114,6 +114,15 @@ export default {
     lazy: true,
     seo: false,
     langDir: 'i18n/'
+  },
+  build: {
+    /*
+     ** You can extend webpack config here
+     */
+    extend (config, ctx) {},
+    parallel: true,
+    cache: true,
+    hardSource: true
   }
   // ,
   // ackee: {
