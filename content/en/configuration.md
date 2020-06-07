@@ -360,3 +360,28 @@ const myIOServer2 = register.server({ port: 3002 }, httpServer) // use your serv
 ```
 
 Both IO servers would still register your ioSvc file and folder so you can continue using those even when Nuxt isn't running. In fact, this is exactly what some of my automated tests rely on.
+
+
+## Console Warnings
+
+To prevent developers from shooting themselves in the foot, console warnings are enabled by default when not in production mode. They can be muted in a variety of ways.
+
+1. The best way to stop seeing the warnings is to resolve the issue that is being complained about. 
+
+The plugin was configured a certain way in `nuxt.config` and the plugin will complain when props are not defined but should be.
+
+2. Most browsers allow the filtering of logs by log level. 
+
+To hide warnings, you can uncheck the "warnings" under "log level":
+![Screenshot from 2020-02-06 12-52-14](https://user-images.githubusercontent.com/5906351/73973433-c77d3580-48df-11ea-809b-6746a93eca2b.png)
+
+3. While the previous method will be the fastest way to show/hide warnings, that approach will also show/hide *all* console warnings, which may not be desired.
+ 
+If it is only desired to hide this plugin's console warnings, you can do so with the `warnings: false` option. (This defaults to true):
+
+```js{}[nuxt.config.js]
+io: {
+  warnings: false, // disables console warnings
+  sockets: [...]
+}
+```

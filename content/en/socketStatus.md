@@ -1,7 +1,7 @@
 ---
 title: Socket Status
 description: 'Socket.IO Status'
-position: 5
+position: 6
 category: Getting started
 ---
 
@@ -48,7 +48,7 @@ mounted() {
 }
 ```
 
-## SocketStatus.vue component
+## Packaged component
 As a convenience, a SocketStatus.vue component is now also packaged with nuxt-socket-io, which will help visualize the status:
 
 ```

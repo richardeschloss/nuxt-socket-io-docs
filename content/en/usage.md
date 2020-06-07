@@ -22,6 +22,7 @@ The options that the plugin will use are:
 * `name`: [String] - name of the socket. If omitted, the default socket will be used
 * `channel`: [String] - the channel (a.k.a namespace) to connect to. Defaults to ''.
 * `teardown`: [Boolean] - specifies whether to enable or disable the "auto-teardown" feature (see section below). Defaults to true.
+* `persist`: [Boolean] = specifies whether to save this socket in vuex (see [vuexModule](/vuexModule))
 * `statusProp`: [String] - specifies the property in [this] component that will be used to contain the socket status. Defaults to 'socketStatus' (referring to an object).
 * `emitTimeout`: [Number] - specifies the timeout in milliseconds for an emit event, after which waiting for the emit response will be canceled. Defaults to undefined.
 * `emitErrorsProp`: [String] - specifies the property in [this] component that will be used to contain emit errors (see section below). Defaults to 'emitErrors' (referring to this.emitErrors, an object of arrays)
