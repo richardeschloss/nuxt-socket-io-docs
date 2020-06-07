@@ -1,194 +1,78 @@
 ---
 title: Configuration
-description: 'You can configure @nuxt/content with the content property in your nuxt.config.js.'
+description: 'Configuring nuxt-socket-io'
 category: Getting started
-position: 6
+position: 3
 ---
 
-You can configure `@nuxt/content` with the `content` property in your `nuxt.config.js`.
+## Configuring Sockets
 
-```js{}[nuxt.config.js]
+The module supports the configuration of multiple IO sockets so that you can easily reference them by name or by default. The module options can be specifed in two ways: 
+
+```js[nuxt.config.js]
+{
+  modules: [
+    'nuxt-socket-io'
+  ],
+  io: {
+    // Options
+  }
+}
+```
+
+or
+
+```js[nuxt.config.js]
+{
+  modules: [
+    ['nuxt-socket-io', options: { /* options here */ }]
+  ]
+}
+```
+
+I personally think the former is the easier and cleaner way, because then the io config can live in a separate file and be completely framework agnostic:
+
+```js[nuxt.config.js]
+import io from 'io.config' // import IO options
+
 export default {
-  content: {
-    // My custom configuration
+  // ...
+  modules: [
+    'nuxt-socket-io'
+  ],
+  io
+  // ...
+}
+```
+
+In order to use the module, at least one socket has to be defined: 
+
+```js[nuxt.config.js]
+{
+  io: {
+    sockets: [ // Required
+      { // At least one entry is required
+        name: 'home',
+        url: 'http://localhost:3000',
+        default: true,
+        vuex: { /* see section below */ },
+        namespaces: { /* see section below */ }
+      }, 
+      { name: 'work', url: 'http://somedomain1:3000' },
+      { name: 'car', url: 'http://somedomain2:3000' },
+      { name: 'tv', url: 'http://somedomain3:3000' },
+      { name: 'test', url: 'http://localhost:4000' }
+    ]
   }
 }
 ```
 
-See [defaults options](#defaults).
+### Basic Options per Socket
 
-## Properties
+* `name`: [String] - identifier for the socket. Required for any socket that isn't treated as the default
+* `url`: [String] - URL for the socket IO server. Required usually. If it is omitted, `window.location` will be used as the fallback.
+* `default`: [Boolean] - specifies the socket to use by default.
 
-### `apiPrefix`
+In a given configuration, if the `name` is not specified, the socket specified as `default` will be used. Furthermore, if `default` is not specified, the first entry will be treated as the default socket. So, in the above configuration, we could omit `name` and `default` and that first entry would still be treated as default. Also, if both the Nuxt app and IO server are running together and listening at the specified url above (localhost on port 3000), omitting the URL above would still work, because the plugin will try to connect to the IO server at `window.location`. Still though, the author advises to at least keep a name in there as it makes things clean.
 
-- Type: `String`
-- Default: `'/_content'`
-
-Route that will be used for client-side API calls and SSE.
-
-```js{}[nuxt.config.js]
-content: {
-  // $content api will be served on localhost:3000/content-api
-  apiPrefix: 'content-api'
-}
-```
-
-### `dir`
-
-- Type: `String`
-- Default: `'content'`
-
-Directory used for writing content.
-You can give an absolute path, if relative, it will be resolved with Nuxt [srcDir](https://nuxtjs.org/api/configuration-srcdir).
-
-```js{}[nuxt.config.js]
-content: {
-  dir: 'my-content' // read content from my-content/
-}
-```
-
-### `fullTextSearchFields`
-
-- Type: `Array`
-- Default: `['title', 'description', 'slug', 'text']`
-
-Fields that needs to be indexed to be searchable, learn more about search [here](/fetching#searchfield-value).
-
-`text` is a special key that contains your Markdown before being parsed to AST.
-
-```js{}[nuxt.config.js]
-content: {
-  // Only search in title and description
-  fullTextSearchFields: ['title', 'description']
-}
-```
-
-### `nestedProperties`
-
-- Type `Array`
-- Default: `[]`
-- Version: **v1.3.0**
-
-Register nested properties to handle dot-notation and deep filtering.
-
-```js{}[nuxt.config.js]
-content: {
-  nestedProperties: ['categories.slug']
-}
-```
-
-### `markdown`
-
-This module uses [remark](https://github.com/remarkjs/remark) under the hood to compile markdown files into JSON AST that will be stored into the `body` variable.
-
-By default, this module uses plugins to improve markdown parsing. You can add your own by using `plugins` or override the default ones by using `basePlugins`. Each plugin is configured using its name in camelCase: `remark-external-links` => `externalLinks`.
-
-> You check for remark plugins [here](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins)
-
-### `markdown.basePlugins`
-
-- Type: `Array`
-- Default: `['remark-squeeze-paragraphs', 'remark-slug', 'remark-autolink-headings', 'remark-external-links', 'remark-footnotes']`
-
-### `markdown.plugins`
-
-- Type: `Array`
-- Default: `[]`
-
-### `markdown.externalLinks`
-
-- Type: `Object`
-- Default: `{}`
-
-You can control the behaviour of links via this option. You can check here for [options](https://github.com/remarkjs/remark-external-links#api).
-
-```js{}[nuxt.config.js]
-content: {
-  markdown: {
-    externalLinks: {
-      target: '_self' // disable target="_blank"
-      rel: false // disable rel="nofollow noopener"
-    }
-  }
-}
-```
-
-### `markdown.footnotes`
-
-- Type: `Object`
-- Default: `{ inlineNotes: true }`
-
-You can control the behaviour of footnotes via this option. You can check here for [options](https://github.com/remarkjs/remark-footnotes#remarkusefootnotes-options).
-
-### `markdown.prism.theme`
-
-- Type: `String`
-- Default: `'prismjs/themes/prism.css'`
-
-This module handles code highlighting in markdown content using [PrismJS](https://prismjs.com).
-
-It automatically pushes the desired PrismJS theme in your Nuxt.js config, so if you want to use a different theme than the default one, for example [prism-themes](https://github.com/PrismJS/prism-themes):
-
-```js{}[nuxt.config.js]
-content: {
-  markdown: {
-    prism: {
-      theme: 'prism-themes/themes/prism-material-oceanic.css'
-    }
-  }
-}
-```
-
-To disable the inclusion of the theme, set prism to `false`:
-
-```js{}[nuxt.config.js]
-content: {
-  markdown: {
-    prism: {
-      theme: false
-    }
-  }
-}
-```
-
-### `yaml`
-
-- Type: `Object`
-- Default: `{}`
-
-This module uses `js-yaml` to parse yaml files, you can check here for [options](https://github.com/nodeca/js-yaml#api).
-
-Note that we force `json: true` option.
-
-### `csv`
-
-- Type: `Object`
-- Default: `{}`
-
-This module uses `node-csvtojson` to parse csv files, you can check here for [options](https://github.com/Keyang/node-csvtojson#parameters).
-
-## Defaults
-
-```js{}[nuxt.config.js]
-export default {
-  content: {
-    apiPrefix: '_content',
-    dir: 'content',
-    fullTextSearchFields: ['title', 'description', 'slug', 'text'],
-    nestedProperties: [],
-    markdown: {
-      externalLinks: {},
-      footnotes: {
-        inlineNotes: true
-      },
-      basePlugins: ['remark-squeeze-paragraphs', 'remark-slug', 'remark-autolink-headings', 'remark-external-links', 'remark-footnotes'],
-      plugins: [],
-      prism: {
-        theme: 'prismjs/themes/prism.css'
-      }
-    },
-    yaml: {},
-    csv: {}
-  }
-}
-```
+Usage will be explained in [usage](/usage)
