@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     link () {
-      return `https://github.com/richardeschloss/nuxt-socket-io-docs/edit/master/docs/content${this.document.path}${this.document.extension}`
+      return `https://github.com/richardeschloss/nuxt-socket-io-docs/edit/master/content/en/${this.document.path}${this.document.extension}`
     }
   }
 }
