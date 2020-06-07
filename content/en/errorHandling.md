@@ -15,8 +15,11 @@ The plugin allows the user to take advantage of new built-in error handling feat
 
 The user opts-in to let the plugin handle timeout errors by specifying an `emitTimeout (ms)` in the IO options when instantiating the nuxtSocket:
 
-```
-this.socket = this.$nuxtSocket({ channel: '/examples', emitTimeout: 1000 }) // 1000 ms
+```js
+this.socket = this.$nuxtSocket({ 
+  channel: '/examples', 
+  emitTimeout: 1000 // 1000 ms
+})
 ```
 
 Then, if an emitTimeout occurs, there are two possible outcomes. One is, the plugin's method will reject with an 'emitTimeout' error, and it will be up to the user to catch the error downstream:
