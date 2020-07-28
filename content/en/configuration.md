@@ -257,6 +257,38 @@ mounted(){
 }
 ```
 
+### Runtime configuration
+
+As of v1.1.6 of nuxt-socket-io, if you are using Nuxt v2.13+, you can now take advantage of the new [runtime config](). Your IO config can now also be configured like this:
+
+`nuxt.config`:
+```js
+publicRuntimeConfig: { 
+    io: {  // will be available in this.$config.io (client-side)
+      sockets: [
+        {
+          name: 'publicSocket',
+          url: 'url1'
+        }
+      ]
+    }
+  },
+  privateRuntimeConfig: {
+    io: { // will be available in this.$config.io (server-side)
+      sockets: [
+        {
+          name: 'privateSocket',
+          url: 'url2'
+        }
+      ]
+    }
+  }
+}
+```
+
+Those IO config will be *merged* into the existing IO config that you previously had, with the runtime config taking priority. Also, to prevent duplicates from being merged in, it's imperative *here* that each socket has the "name" property defined, since the plugin looks for that before merging in.
+
+
 ## Automatic IO Server Registration
 
 As of v1.0.25, it is now possible to automatically start an IO server simply based on the existence of an IO server file and folder. Inspired by the way Nuxt creates routes based on your "pages" directory, server-side IO services will be automatically registered if your "server" directory contains a file "io.js" and folder "io":
