@@ -259,7 +259,7 @@ mounted(){
 
 ### Runtime configuration
 
-As of v1.1.6 of nuxt-socket-io, if you are using Nuxt v2.13+, you can now take advantage of the new [runtime config](). Your IO config can now also be configured like this:
+As of v1.1.6 of nuxt-socket-io, if you are using Nuxt v2.13+, you can now take advantage of the new [runtime config](https://nuxtjs.org/guide/runtime-config/). Your IO config can now also be configured like this:
 
 `nuxt.config`:
 ```js
