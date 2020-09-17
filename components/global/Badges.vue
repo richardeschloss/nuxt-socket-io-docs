@@ -2,7 +2,7 @@
   <div>
     <a
       v-for="image in images"
-      :key="image.link"
+      :key="image.src"
       :href="image.link"
       target="_blank"
       class="badge"

@@ -11,9 +11,8 @@ The module will build out the following states which can then be accessed by `$s
 
 1. `clientApis`: contains the client apis for each component See the section on client APIs for more details.
 2. `ioApis`: contains the server apis for each IO server. See the section on server APIs for more details
-3. `sockets`: contains the persisted sockets, if any. See the section on persistence for more details.
-4. `emitErrors`: contains emit errors that have occurred, organized by the socket label, and then by the emit event.
-5. `emitTimeouts`: contains emit timeouts that have occurred, organized by the socket label and then by the emit event.
+3. `emitErrors`: contains emit errors that have occurred, organized by the socket label, and then by the emit event.
+4. `emitTimeouts`: contains emit timeouts that have occurred, organized by the socket label and then by the emit event.
 
 The mutations are used internally by the plugin and it is advised to avoid committing these mutations yourself. 
 
