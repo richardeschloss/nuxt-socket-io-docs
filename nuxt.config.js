@@ -1,8 +1,10 @@
+ import theme from '@nuxt/content-theme-docs'
+
 const URL = 'https://nuxt-socket-io.netlify.app'
 
-export default {
+export default theme({
   target: 'static',
-  ssr: true, // similar to mode: 'universal'
+  ssr: false, //true, // similar to mode: 'universal'
   /*
   ** Headers of the page
   */
@@ -34,30 +36,30 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-    '@/plugins/categories',
-    '@/plugins/i18n.client',
-    '@/plugins/vue-scrollactive',
-    '@/plugins/components',
-    '@/plugins/menu.client'
-  ],
+  // plugins: [
+  //   '@/plugins/categories',
+  //   '@/plugins/i18n.client',
+  //   '@/plugins/vue-scrollactive',
+  //   '@/plugins/components',
+  //   '@/plugins/menu.client'
+  // ],
   /*
   ** Give routes to static generation
   */
-  generate: {
-    fallback: '404.html', // for Netlify
-    routes: ['/'] // give the first url to start crawling
-  },
+  // generate: {
+  //   fallback: '404.html', // for Netlify
+  //   routes: ['/'] // give the first url to start crawling
+  // },
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss',
-    // Doc: https://github.com/nuxt-community/color-mode-module
-    '@nuxtjs/color-mode'
+    // '@nuxtjs/tailwindcss',
+    // // Doc: https://github.com/nuxt-community/color-mode-module
+    // '@nuxtjs/color-mode'
     // https://github.com/bdrtsky/nuxt-ackee
     // 'nuxt-ackee'
   ],
@@ -65,9 +67,9 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    'nuxt-i18n',
-    '@nuxtjs/pwa',
-    '@nuxt/content',
+    // 'nuxt-i18n',
+    // '@nuxtjs/pwa',
+    // '@nuxt/content',
     'nuxt-socket-io'
   ],
   io: {
@@ -79,24 +81,24 @@ export default {
   ** Components auto import
   ** See https://github.com/nuxt/components
   */
-  components: {
-    dirs: [
-      { path: '@/components', pattern: '*.vue' }
-    ]
-  },
+  // components: {
+  //   dirs: [
+  //     { path: '@/components', pattern: '*.vue' }
+  //   ]
+  // },
   /*
   ** Modules configuration
   */
-  colorMode: {
-    preference: 'light'
-  },
-  content: {
-    markdown: {
-      prism: {
-        theme: 'prism-themes/themes/prism-material-oceanic.css'
-      }
-    }
-  },
+  // colorMode: {
+  //   preference: 'light'
+  // },
+  // content: {
+  //   markdown: {
+  //     prism: {
+  //       theme: 'prism-themes/themes/prism-material-oceanic.css'
+  //     }
+  //   }
+  // },
   i18n: {
     //   locales: [{
     //     code: 'fr',
@@ -109,17 +111,17 @@ export default {
     //     file: 'en-US.js',
     //     name: 'English'
     //   }],
-    locales: [{
+    locales: () => [{
       code: 'en',
       iso: 'en-US',
       file: 'en-US.js',
       name: 'English'
     }],
     defaultLocale: 'en',
-    parsePages: false,
-    lazy: true,
-    seo: false,
-    langDir: 'i18n/'
+    // parsePages: false,
+    // lazy: true,
+    // seo: false,
+    // langDir: 'i18n/'
   },
   build: {
     /*
@@ -136,4 +138,4 @@ export default {
   //   domainId: '7b3c9779-442c-40c6-9931-ea71977c52a8',
   //   detailed: true
   // }
-}
+})

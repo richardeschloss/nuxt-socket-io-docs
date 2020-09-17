@@ -30,9 +30,7 @@ Nuxt Socket.io -- socket.io client and server module for Nuxt
 
 ## Features
 
-<base-list :items="features"></base-list>
-
-<p class="flex items-center">Enjoy light and dark mode: <color-switcher class="p-2"></color-switcher></p>
+<list :items="features"></list>
 
 ## Demo
 Several demos can be found [here](https://nuxt-socket-io.herokuapp.com/)
