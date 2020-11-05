@@ -142,3 +142,173 @@ this.$root.mySocket = this.$nuxtSocket({ // Here, even though persist is not set
   channel: '/'
 })
 ```
+
+## Type Intellisense
+
+As of v1.1.12, the nuxt-socket-io package now ships with types, so that intellisense can take advantage of the type definitions. The types are in "node_modules/nuxt-socket-io/io/types.d.ts". Some of what's described here is beyond the scope of the nuxt-socket-io, but some useful bullets will be written here.
+
+If you use another IDE and the setup is different, please submit a PR to [nuxt-socket-io-docs](https://github.com/richardeschloss/nuxt-socket-io-docs) for your IDE.
+
+### VS Code
+
+First, it helps to have the following in your settings.json:
+
+```js{}[settings.json]
+{
+  ...
+  "javascript.implicitProjectConfig.checkJs": true,
+  "javascript.validate.enable": true
+  ...
+}
+```
+
+For some reason, it sometimes seems necessary to also have "checkJs" set in your local jsconfig.json file:
+
+```js{}[jsconfig.json]
+{
+  ...
+  "compilerOptions": {
+    "checkJs": true,
+    ...
+  }
+  ...
+}
+```
+
+This way, you don't have to add the `// @ts-check` line in every file you want checked. 
+
+When the nuxt-socket-io package gets installed, it also installs the types that it relies on. The following should have also gotten installed: 
+
+- @nuxt/types
+- @types/socket.io-client
+
+If they didn't, you have to npm install them before continuing.
+
+**Using type intellisense in nuxt.config**:
+
+Type validation will occur so long as you precede the line with the JSDoc string:
+
+```js
+/** @type {import('nuxt-socket-io/io/types').NuxtSocketIoOptions} */
+```
+
+or, more generally as:
+
+```js{}[nuxt.config.js]
+/** @type {import('nuxt-socket-io').NuxtSocketIoOptions} */
+```
+
+For the intellisense to work right (with prop suggestions), the io config needs to be defined before it's used: (I don't know why...)
+
+This *works*
+
+```js{}[nuxt.config.js]
+/** @type {import('nuxt-socket-io/io/types').NuxtSocketIoOptions} */
+const io = {
+  sockets: [ // <-- as soon as you type "so" you'll see "sockets"
+    {
+      name: 'dev:server',
+      // url: 'http://localhost:3000',
+      default: true
+    },
+    { name: 'main', url: 'http://localhost:8011' }
+  ]
+}
+
+
+module.exports = {
+  ...,
+  io,
+  ...
+}
+
+```
+
+For some reason, this does *not* quite work right:
+
+```js{}[nuxt.config.js]
+
+module.exports = {
+  ...,
+  /** @type {import('nuxt-socket-io/io/types').NuxtSocketIoOptions} */
+  io: {
+    sockets: [ // <-- as soon as you type "so" you don't see "sockets"
+      {
+        name: 'dev:server',
+        // url: 'http://localhost:3000',
+        default: true
+      },
+      { name: 'main', url: 'http://localhost:8011' }
+    ]
+  },
+  ...
+}
+
+```
+
+In this above snippet, if you wrote "socketsx", VS code will show the error, but it never suggests the property. So, it validates correctly, but doesn't show the suggestion. Does anyone know why?
+
+
+**Usage in components**:
+
+The proper way would be to import the types you want and then use them for validation like this:
+
+```js{}[/path/to/Component.vue]
+import type { NuxtSocket } from 'nuxt-socket-io';
+export default {
+  data() {
+    return {
+      socket: null as NuxtSocket | null
+    }
+  },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      // typing "ch" should suggest "channel"
+      // (a nuxt-socket-io type)
+      channel: '/someChannel' ,
+
+      // typing "rec" should suggest "reconnection"
+      // (a socket.io-client type that got inherited)
+      reconnection: false
+    })
+  }
+}
+```
+
+If you plan to use nuxt-socket-io in multiple components and don't want to keep importing the types you could put the import in a [projectRoot]/types.js file and intellisense seems to still pick it up:
+
+```js{}[appRoot/types.js]
+import 'nuxt-socket-io/io/types.d'
+```
+
+```js{}[/path/to/Component.vue]
+// (omitted import here now)
+export default {
+  data() {
+    return {
+      socket: null
+    }
+  },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      // typing "ch" should suggest "channel"
+      // (a nuxt-socket-io type)
+      channel: '/someChannel' ,
+
+      // typing "rec" should suggest "reconnection"
+      // (a socket.io-client type that got inherited)
+      reconnection: false
+    })
+  }
+}
+```
+
+The only other quirk I notice is that VS code properly knows "this.socket" is of type "NuxtSocket", but the intellisense doesn't suggest/validate that quite right. It works however if the socket is not part of "this":
+
+```js
+var socket = this.$nuxtSocket({...}) 
+// works: socket.em --> will show "emit"
+
+this.socket = this.$nuxtSocket({...}) 
+// does not quite work: this.socket.em --> doesn't show any suggestions for "emit"
+```
