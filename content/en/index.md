@@ -14,6 +14,7 @@ features:
   - $nuxtSocket vuex module and socket persistence in vuex
   - Support for dynamic APIs using the KISS API format
   - Support for the IO config in the new Nuxt runtime config (for Nuxt versions >= 2.13)
+  - Automatic middleware registration
 badges:
   - npm:version
   - npm:dt

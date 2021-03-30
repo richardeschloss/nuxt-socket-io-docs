@@ -393,6 +393,47 @@ const myIOServer2 = register.server({ port: 3002 }, httpServer) // use your serv
 
 Both IO servers would still register your ioSvc file and folder so you can continue using those even when Nuxt isn't running. In fact, this is exactly what some of my automated tests rely on.
 
+### IO Middleware registration:
+
+As of v1.1.15, IO middleware registration occurs as long as an exported `middlewares` is defined in the root io service, and follows the following format:
+
+```js[server/io.js]
+// Define middlewares, sequence matters
+// These functions get called in sequence
+// (executed once per connection)
+export const middlewares = {
+  m1(socket, next) {
+    // called first
+    // Must call next:
+    next()
+  },
+  m2(socket, next) {
+    // then this gets called
+    // Must call next:
+    next()
+  }
+}
+
+export default function Svc(socket, io) {
+  // ... 
+}
+```
+
+### IO Instance registration:
+
+If the io instance is needed before clients connect, it can be accessed by exporting a `setIO` function in the root io service:
+
+```js[server/io.js]
+export function setIO(io) { 
+  /* work with io instance here before clients connect, if you must */
+}
+
+export default function Svc(socket, io) {
+  // work with socket instance (i.e., after client connects)
+  // ... 
+}
+```
+
 
 ## Console Warnings
 
