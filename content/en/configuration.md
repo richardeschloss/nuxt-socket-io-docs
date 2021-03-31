@@ -419,6 +419,8 @@ export default function Svc(socket, io) {
 }
 ```
 
+The same format will be respected for the namespaces too.
+
 ### IO Instance registration:
 
 If the io instance is needed before clients connect, it can be accessed by exporting a `setIO` function in the root io service:
