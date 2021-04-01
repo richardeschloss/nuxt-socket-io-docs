@@ -312,3 +312,112 @@ var socket = this.$nuxtSocket({...})
 this.socket = this.$nuxtSocket({...}) 
 // does not quite work: this.socket.em --> doesn't show any suggestions for "emit"
 ```
+
+## Composition API 
+
+As of this writing (03/31/2021), the options API still seems to be the far cleaner and easier way to do things (my opinion), and has been the more stable approach when working with this module (which existed before the composition API). However, there is a crowd that seems to like the composition API. 
+
+As of v1.1.17, there is some basic support for use with the new [Nuxt composition API](https://composition-api.nuxtjs.org/) which builds off Vue's composition API. 
+
+The nuxt-socket-io plugin requires a context to work correctly. The context allows it to work with both the options and composition API. So, to use it in the `setup` function, the most basic usage is this:
+
+```js
+import {
+  defineComponent,
+  useContext,
+  onUnmounted
+} from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup(props, context) { // <-- don't use Vue's context arg
+    // Here, we want Nuxt context instead. 
+    const ctx = useContext()
+    // Setup context:
+    // For example, nuxt-socket-io has a built-in 
+    // teardown feature which will need the onUnmounted hook
+    ctx.onUnmounted = onUnmounted
+
+    // And finally, we can get the socket like before:
+    // (instead of "this", it's "ctx" because that's the 
+    // context here)
+    const socket = ctx.$nuxtSocket({
+      channel: '/index',
+      reconnection: false
+    })
+    socket.emit('hello', 'world', (resp) => {
+      /* handle resp */
+    })
+    return {}
+  }
+}
+```
+
+Now, if we want to use more nuxt-socket-io features, because of the changes introduced in the composition API, there is a bit more setup work to do to the context `ctx` before instantiating $nuxtSocket.
+
+As an example, if we want to use the namespace config feature, we need to define $data on the context and make that data reactive:
+
+```js
+setup() {
+  ctx.$data = toRefs(
+    reactive({
+      message2Rxd: 'this should change'
+    })
+  )
+  ctx.$nuxtSocket({
+    channel: '/index',
+    reconnection: false,
+    namespaceCfg: {
+      emitters: ['getMessage2 --> message2Rxd']
+    }
+  })
+
+  // getMessage2 method gets attached to context:
+  ctx.getMessage2('hello') // this response will go to $data.message2Rxd above.
+
+  return {
+    ...ctx.$data, // export the data
+    getMessage2: ctx.getMessage2 // export the method  
+  }
+}
+```
+
+Other methods that have disappeared from the context in the composition API are $destroy and $watch (even though we now get watch). Therefore, if there is a destroy method you would *also* like to have run after the auto teardown runs, you need to define the method:
+
+```js
+setup() {
+  // We define ctx.$destroy because it's undefined in v3, 
+  // but defined in v2. This allow the module to be compatible with both
+  ctx.$destroy = () => {
+    // This will run after the nuxt-socket-io tears down.
+    console.log('run me too')
+  }
+  ctx.onUnmounted = onUnmounted
+  ctx.$nuxtSocket({
+    channel: '/index',
+    reconnection: false
+    // teardown is true, by default
+  })
+}
+```
+
+There are some features that depend on the ctx.$watch to be defined. While this exists in v2, it needs to be stubbed in the composition api:
+
+```js
+import {
+  defineComponent,
+  useContext,
+  watch
+} from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup(props, context) {
+    const ctx = useContext()
+    ctx.$watch = (label, cb) => {
+      // This stub will eventually be absorbed into
+      // in the plugin when '@nuxtjs/composition-api' reaches stable version:
+      watch(ctx.$data[label], cb)
+    }
+  }
+}
+```
+
