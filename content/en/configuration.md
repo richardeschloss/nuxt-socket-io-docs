@@ -393,6 +393,10 @@ const myIOServer2 = register.server({ port: 3002 }, httpServer) // use your serv
 
 Both IO servers would still register your ioSvc file and folder so you can continue using those even when Nuxt isn't running. In fact, this is exactly what some of my automated tests rely on.
 
+As of v1.1.18, All other options in `io.server` will be passed down to the socket.io server [instance](https://socket.io/docs/v4/server-api/#new-Server-httpServer-options). So, for example, `cors` options can be specifed here.
+
+
+
 ### IO Middleware registration:
 
 As of v1.1.15, IO middleware registration occurs as long as an exported `middlewares` is defined in the root io service, and follows the following format:
