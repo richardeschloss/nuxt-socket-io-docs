@@ -15,6 +15,7 @@ features:
   - Support for dynamic APIs using the KISS API format
   - Support for the IO config in the new Nuxt runtime config (for Nuxt versions >= 2.13)
   - Automatic middleware registration
+  - ES module
 badges:
   - npm:version
   - npm:dt

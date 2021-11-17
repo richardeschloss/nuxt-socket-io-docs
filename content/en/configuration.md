@@ -89,7 +89,6 @@ The options are:
 The format of each entry in mutations or actions can be:
 * A single name string - the event name acts as the mutation/action
 * A string with a double-dashed arrow - the left side of the arrow is the event name, the right side is the mutation/action
-* An object - the object key is the event, the value is the muation/action
 
 The format of each entry in emitbacks is the nearly the same, except if uusing the arrow format, it's flipped, and the left side of the arrow will be the event to emit back, the right side will be the state.
 
@@ -111,11 +110,11 @@ io: {
           // Alternatively, use arrow syntax 
           'progress --> examples/SET_PROGRESS' // S/A 
         ],
-        actions: [{ 
+        actions: [
           // When "chatMessage" is received,
           // dispatch action "FORMAT_MESSAGE"
-          chatMessage: 'FORMAT_MESSAGE' 
-        },
+          'chatMessage --> FORMAT_MESSAGE',
+
           // When "SOMETHING_ELSE" is received,
           // dispatch action "SOMETHING_ELSE"
           'SOMETHING_ELSE' 
@@ -125,14 +124,10 @@ io: {
           // When "examples/sample" state changes,
           // emit back the event "examples/sample"
           'examples/sample', 
-          { 
-            // When "examples/sample2" state changes,
-            // emit back the event "sample2"
-            'examples/sample2': 'sample2' 
-          },
-          // Alternatively, the previous entry 
-          // could be written with the arrow format:
-          'examples/sample2 <-- sample2'  // S/A 
+
+          // When "examples/sample2" state changes,
+          // emit back the event "sample2"
+          'sample2 <-- examples/sample2'
         ]
       }
     }
@@ -157,7 +152,7 @@ mounted() {
 }
 ```
 
-You may prefer to maintain the vuex options like this instead of in the nuxt.config. The vuex options defined in the instance will override the vuex options in the config for a given socket. Best practice is to keep things clean and avoid duplicating entries.
+You may prefer to maintain the vuex options like this instead of in the nuxt.config. The vuex options defined in the instance will be merged the vuex options in the config for a given socket, with preference given to config in the component. Best practice is to keep things clean and avoid duplicating entries.
 
 ### Namespace Configuration
 
@@ -195,7 +190,7 @@ Note: as of v1.0.12, it is now also possible to call the emitter with an argumen
 
 → `emitEvt` is the event name to emit back to the server when the `watchProp` changes. If `watchProp` and the arrow "<--" are omitted, then `emitEvt` will double as the `watchProp`.
 
-→ Important NOTE: this syntax can now also work in the Vuex options for emitbacks, with ONE important difference. In Vuex (and Nuxt, specifically), the watch property path may require forward slashes "/". For example, if your stores folder has an "examples.js" file in it, with state properties "sample" and "sample2", watchProp would have to be specified as "examples/sample" and "examples/sample2". The exception to the rule is "index.js" which is treated as the stores root. I.e., "sample" in index.js would be referred to simply as "sample" and not "index/sample") 
+→ Important NOTE: this syntax can also work in the Vuex options, with ONE important difference. In Vuex (and Nuxt, specifically), the watch property path may require forward slashes "/". For example, if your stores folder has an "examples.js" file in it, with state properties "sample" and "sample2", watchProp would have to be specified as "examples/sample" and "examples/sample2". The exception to the rule is "index.js" which is treated as the stores root. I.e., "sample" in index.js would be referred to simply as "sample" and not "index/sample") 
 
 ---
 
@@ -256,6 +251,8 @@ mounted(){
   })
 }
 ```
+
+As of 2.x, if you also had the namespace config defined in nuxt.config (module options), the configs will be merged, giving preference to `namespaceCfg` in the component.
 
 ### Runtime configuration
 
