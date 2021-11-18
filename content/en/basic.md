@@ -30,7 +30,7 @@ data () {
   }
 },
 mounted () {
-  this.socket = this.$nuxtSocket({ channel: '/index' })
+  this.socket = this.$nuxtSocket({ channel: '/index', withCredentials: true })
 },
 methods: {
   getMessage () {
@@ -43,3 +43,20 @@ methods: {
   }
 }
 ```
+
+#### CORS configuration
+On the socket io server side (in this case, Heroku), the following configuration was provided:
+
+```js
+io: {
+  server: {
+    // @ts-ignore
+    cors: {
+      credentials: true, // "Configures the Access-Control-Allow-Credentials CORS header. Set to true to pass the header, otherwise it is omitted."
+      origin: ['https://nuxt-socket-io.netlify.app'] // Array of whitelisted origin(s)
+    }
+  }
+}
+```
+
+Since the server-side sets the Access-Control-Allow-Credentials CORS header, the client-side also needs to set `withCredentials` in it's request, and that's exactly what is happening in the mounted hook.

@@ -56,6 +56,26 @@ methods: {
 }
 ```
 
+## CORS
+
+Server options can be specified in the [module options `server`](http://localhost:3000/configuration#io-server-overrides). It is here where you specify the CORS options used by socket.io (and the underlying CORS package):
+
+nuxt.config:
+
+```js
+io: {
+  server: {
+    cors: { /* CORS options */ }
+  }
+}
+```
+
+You will most likely need to specify the CORS options if the socket.io client and server are located at different origins. For example, the socket.io-client here is hosted at Netlify whereas the socket.io server is hosted at Heroku. The socket.io server has to allow the client origin (http://nuxt-socket-io.netlify.app) in order for the communication to work.
+
+Please refer to the socket.io docs for [handling CORS](https://socket.io/docs/v4/handling-cors/). 
+
+Please also refer to the [Basic Example demo](http://localhost:3000/basic#try-it) to see how it's been configured.
+
 ## Auto Teardown
 
 The plugin, by default, has auto-teardown enabled. As you leave a component that has instantiated nuxtSocket, the plugin will first removeAllListeners (so that duplicates don't get re-registered), then it will close the connection, and then call your component's destroy lifecycle method. Also, while you are on the component, a listener will also be registered for the 'disconnect' event from the server so that it can close it's end of the connection.
