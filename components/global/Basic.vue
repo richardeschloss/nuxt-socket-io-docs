@@ -19,7 +19,7 @@ export default {
     }
   },
   mounted () {
-    this.socket = this.$nuxtSocket({ channel: '/index' })
+    this.socket = this.$nuxtSocket({ channel: '/index', withCredentials: true })
   },
   methods: {
     async getMessage () {
