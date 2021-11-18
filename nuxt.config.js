@@ -47,9 +47,6 @@ export default theme({
   io: {
     sockets: [{
       url: 'https://nuxt-socket-io.herokuapp.com'
-    }, {
-      name: 'dev',
-      url: 'http://localhost:3000'
     }]
   },
   i18n: {
