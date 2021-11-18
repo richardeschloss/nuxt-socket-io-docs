@@ -19,22 +19,29 @@ export default {
     }
   },
   mounted () {
-    this.socket = this.$nuxtSocket({ channel: '/index' })
+    this.socket = this.$nuxtSocket({ 
+      name: 'dev',
+      channel: '/index'
+    })
   },
   methods: {
-    getMessage () {
-      return new Promise((resolve) => {
-        this.show = false
-        this.socket.emit('getMessage', { id: 'abc123' }, (resp) => {
-          this.show = true
-          this.messageRxd = resp
-          resolve()
-        })
-      })
+    async getMessage () {
+      this.show = false
+      this.messageRxd = await this.socket.emitP('getMessage', { id: 'abc123' })
+      this.show = true
     }
   }
 }
 </script>
 
 <style scoped>
+.btn {
+  @apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}
 </style>

@@ -28,7 +28,7 @@ The options that the plugin will use are:
 * `emitErrorsProp`: [String] - specifies the property in [this] component that will be used to contain emit errors (see section below). Defaults to 'emitErrors' (referring to this.emitErrors, an object of arrays)
 * **[All other options]**  - all other options that are supported by socket.io-client will be passed down to socket.io client and respected. Please read their [docs](https://socket.io/docs/client-api/). But please note, if you specify *url* here, it won't be used because you already specified the IO server url in nuxt.config. The idea is, abstract out the actual url from the code. Just connect to "yourSocket" and use it. Helps make the code much easier to read and maintain. If you have an API that lives at a specific path, you can use the "path" option for this purpose (please also refer to [issue 73](https://github.com/richardeschloss/nuxt-socket-io/issues/73) to learn more).
 
-The return value is an actual socket.io-client instance that can be used just like any socket.io-client. So, `this.socket.emit` and `this.socket.on` will be defined just as you would expect.
+The return value is an actual socket.io-client instance that can be used just like any socket.io-client. So, `this.socket.emit` and `this.socket.on` will be defined just as you would expect. As of 2.x+, you can now also use `this.socket.emitP` and `this.socket.onceP` which are promisifed methods of emit and once. 
 
 ## Example
 
@@ -44,11 +44,15 @@ mounted() {
   })
 },
 methods: {
-  getMessage() {
+  async getMessage() {
+    this.messageRxd = await this.socket.emitP('getMessage', { id: 'abc123' })
+  },
+  // Or the old way with callback
+  getMessageAlt() {
     this.socket.emit('getMessage', { id: 'abc123' }, (resp) => {
       this.messageRxd = resp
     })
-  } 
+  },
 }
 ```
 

@@ -16,6 +16,7 @@ features:
   - Support for the IO config in the new Nuxt runtime config (for Nuxt versions >= 2.13)
   - Automatic middleware registration
   - ES module
+  - Promisified emit and once methods (socket.emitP and socket.onceP in 2.x+)
 badges:
   - npm:version
   - npm:dt
