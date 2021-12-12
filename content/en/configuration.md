@@ -348,18 +348,6 @@ export default function(socket, io) {
 
 In the above example, the code is really easy to read and write. The function names here are mapped to the socket IO *event* names that are received. So, when an IO client emits an event "fn1" with data "msg", the "fn1" will be called with "msg". Likewise, when "fn2" is emitted, "fn2" will be run. Also, your functions can be promisified or not, the module will wait for promises to resolve, if there are any. It will also *catch* any error you throw, sending back a JSON object as response, with the `resp.emitError` set to your `err.message`. So, when "fn3" is emitted, it will be called with "msg" and it will take some time to run. As that function provides it's notification back in the form of "err" and "progress", we can "socket.emit" that progress back to the IO client as we wait for the function to complete. If for any reason that fn3 fails, the module will catch the error and respond with that "emitError".
 
-** A Helpful Tip **: Running just "nuxt" won't watch for changes on the server. If you wish to keep having the server restart when you make server-side changes you'll want to run "npm run dev:server" which I have defined as:
-
-```
-// package.json
-"scripts": {
-  "dev:server": "cross-env NODE_ENV=development nodemon server/index.js --watch server"
-}
-```
-
-(See my [server/index.js](https://github.com/richardeschloss/nuxt-socket-io/blob/master/server/index.js) to see how I start Nuxt using their API)
-
-
 ### IO Server Overrides
 
 The default behavior above can be simply overridden in nuxt.config with one prop "server":
