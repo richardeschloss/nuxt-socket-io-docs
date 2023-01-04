@@ -1,5 +1,5 @@
 ---
-title: Vuex Module
+title: Vuex Module (no longer recommended)
 description: 'The $nuxtSocket VuexModule'
 position: 5
 category: Getting started

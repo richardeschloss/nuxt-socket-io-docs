@@ -65,16 +65,21 @@ nuxt.config:
 ```js
 io: {
   server: {
-    cors: { /* CORS options */ }
+    /* CORS options */ 
+    cors: { 
+      credentials: true,
+      origin: [
+        // whitelisted origins 
+        'https://your-socket-io-client.app'
+      ]
+    }
   }
 }
 ```
 
-You will most likely need to specify the CORS options if the socket.io client and server are located at different origins. For example, the socket.io-client here is hosted at Netlify whereas the socket.io server is hosted at Heroku. The socket.io server has to allow the client origin (http://nuxt-socket-io.netlify.app) in order for the communication to work.
+You will most likely need to specify the CORS options if the socket.io client and server are located at different origins. The socket.io server has to allow the client origin (https://your-socket-io-client.app) in order for the communication to work.
 
 Please refer to the socket.io docs for [handling CORS](https://socket.io/docs/v4/handling-cors/). 
-
-Please also refer to the [Basic Example demo](http://localhost:3000/basic#try-it) to see how it's been configured.
 
 ## Auto Teardown
 
@@ -86,8 +91,7 @@ If you do not wish to have this behavior, you can disable it by setting `teardow
 const socket = this.nuxtSocket({ channel: '/index', teardown: false })
 ```
 
-You may want to disable the auto-teardown if you are planning on re-using the socket. However, it should be noted that socket.io-client under the hood will *already* try to re-use a single connection when using different namespaces for the same socket. I personally think it is easier to manage code for the different namespaces and to configure namespaces as described above; i.e., each component gets its own set of "mouths and ears". If your coding style is different and you would still insist on disabling the auto-teardown, then just rememeber it becomes your responsibility to properly removeListeners and perform cleanup.
-
+You may want to disable the auto-teardown if you are planning on re-using the socket (for example, in dev mode if you're changing the nuxt.config and want the HMR to work). However, it should be noted that socket.io-client under the hood will *already* try to re-use a single connection when using different namespaces for the same socket.
 
 ## Socket Persistence 
 

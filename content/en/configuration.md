@@ -77,7 +77,38 @@ In a given configuration, if the `name` is not specified, the socket specified a
 
 Usage will be explained in [usage](/usage)
 
-### Vuex Options per Socket
+### iox Options per Socket
+
+For Nuxt3, `iox` option is meant to be a replacement of sorts for `vuex`. Internally, nuxt-socket-io's plugin maintains an internal state `ioState` which you can access in your app with `ioState().value`. 
+
+The `iox` option is configured in a similar (but slighlty different) way as the `vuex` option:
+
+```js
+io: {
+  sockets: [
+    ...
+    iox: [
+      /* [io event] ---------- [state] */ 
+      'chatMessage --> chats/message',
+      'progress --> examples/progress',
+      'examples/sample <-- examples/sample',
+      'examples/someObj', // Bidirectional
+      'bidirectional'
+    ],
+  ]
+}
+```
+
+Here, instead of mapping IO events to Vuex actions or mutations, the events go directly to the internal state. From the above example, the following happens:
+
+0. When "chatMessage" IO event is received, it's saved in `ioState().value.chats.message`
+1. Similar for "progress"
+2. When `ioState().value.examples.sample` changes, it's emitted back with the io event "examples/sample"
+3. "examples/someObj" and "bidirectional" are bidirectional.
+
+Using Nuxt's built-in `useState` seemed to the most versatile way to support a centralized `ioState`.
+
+### Vuex Options per Socket (no longer recommended)
 
 As socket.IO events are received, they can either committed or dispatched to the Vuex mutations and store, respectively. Also, if properties change in Vuex, those changes can be emitted back to the IO server. Those changes that are emitted back are called "emitBacks".
 
@@ -380,6 +411,7 @@ Both IO servers would still register your ioSvc file and folder so you can conti
 
 As of v1.1.18, All other options in `io.server` will be passed down to the socket.io server [instance](https://socket.io/docs/v4/server-api/#new-Server-httpServer-options). So, for example, `cors` options can be specifed here.
 
+! Looking for CORS help? See [CORS](/usage#cors) !
 
 
 ### IO Middleware registration:
