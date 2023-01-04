@@ -341,25 +341,17 @@ this.socket = this.$nuxtSocket({...})
 // does not quite work: this.socket.em --> doesn't show any suggestions for "emit"
 ```
 
-## Composition API 
+## Composition API
 
 As of this writing (03/31/2021), the options API still seems to be the far cleaner and easier way to do things (my opinion), and has been the more stable approach when working with this module (which existed before the composition API). However, there is a crowd that seems to like the composition API. 
-
-As of v1.1.17, there is some basic support for use with the new [Nuxt composition API](https://composition-api.nuxtjs.org/) which builds off Vue's composition API. 
 
 The nuxt-socket-io plugin requires a context to work correctly. The context allows it to work with both the options and composition API. So, to use it in the `setup` function, the most basic usage is this:
 
 ```js
-import {
-  defineComponent,
-  useContext,
-  onUnmounted
-} from '@nuxtjs/composition-api'
-
 export default defineComponent({
   setup(props, context) { // <-- don't use Vue's context arg
     // Here, we want Nuxt context instead. 
-    const ctx = useContext()
+    const ctx = useNuxtApp()
     // Setup context:
     // For example, nuxt-socket-io has a built-in 
     // teardown feature which will need the onUnmounted hook
@@ -431,15 +423,9 @@ setup() {
 There are some features that depend on the ctx.$watch to be defined. While this exists in v2, it needs to be stubbed in the composition api:
 
 ```js
-import {
-  defineComponent,
-  useContext,
-  watch
-} from '@nuxtjs/composition-api'
-
 export default defineComponent({
   setup(props, context) {
-    const ctx = useContext()
+    const ctx = useNuxtApp()
     ctx.$watch = (label, cb) => {
       // This stub will eventually be absorbed into
       // in the plugin when '@nuxtjs/composition-api' reaches stable version:
