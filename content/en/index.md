@@ -20,7 +20,7 @@ features:
 badges:
   - npm:version
   - npm:dt
-  - gitlab:pipeline
+  - github:pipeline
   - gitlab:coverage
   - npm:license
   
@@ -35,11 +35,3 @@ Nuxt Socket.io -- socket.io client and server module for Nuxt
 
 <list :items="features"></list>
 
-## Demo
-Several demos can be found [here](https://nuxt-socket-io.herokuapp.com/)
-
-These docs will attempt to explain and be in sync with the examples shown there. 
-
-## Online playground
-
-Play with the [code sandbox](https://codesandbox.io/s/nuxt-socket-io-pgpui?file=/nuxt.config.js) as you read the docs.

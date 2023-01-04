@@ -37,11 +37,14 @@ Then, add `nuxt-socket-io` to the `modules` section of `nuxt.config.js`:
 }
 ```
 
-Finally, since the module requires Vuex to operate correctly, please at the minimum make sure you have a Vuex state defined:
+In Nuxt3, Vuex is no longer shipped with it. You can consider using my [nuxt3-vuex](https://www.npmjs.com/package/nuxt3-vuex) module to plug it in. If you wish to still use Vuex in Nuxt3 (not recommended), then you will also need at the minimum a Vuex state defined:
 
 ```js{}[store/index.js]
 export const state = () => ({})
 
 ```
 
-The module needs this so it can register its own Vuex module
+The module needs this so it can register its own Vuex module.
+
+(NOTE: a new `iox` option is meant to sort of be a drop-in replacement)
+

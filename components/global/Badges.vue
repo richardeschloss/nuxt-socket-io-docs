@@ -22,9 +22,9 @@ const badgeTemplate = {
     src: 'https://img.shields.io/npm/dt/[project]',
     link: 'https://www.npmjs.com/package/[project]'
   },
-  'gitlab:pipeline': {
-    src: 'https://gitlab.com/[user]/[project]/badges/master/pipeline.svg',
-    link: 'https://gitlab.com/[user]/[project]'
+  'github:pipeline': {
+    src: 'https://img.shields.io/github/actions/workflow/status/[user]/[project]/test.js.yml?branch=master',
+    link: 'https://github.com/[user]/[project]/actions/workflows/test.js.ym'
   },
   'gitlab:coverage': {
     src: 'https://gitlab.com/[user]/[project]/badges/master/coverage.svg',
